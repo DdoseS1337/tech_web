@@ -1,1 +1,3 @@
-export class User {}
+import { AbstractEntity } from '../../database/abstract.entity';
+
+export class User extends AbstractEntity<User> {}
