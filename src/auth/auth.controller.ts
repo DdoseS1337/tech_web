@@ -1,13 +1,32 @@
-import { Controller, Post, Res, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Render,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { Response } from 'express';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from '../users/entities/user.entity';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guards';
+import { MyWebSocketGateway } from 'src/websocket/websocket.gateway';
+import { JwtAuthGuard } from './guards/jwt-auth.guards';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly wsGateway: MyWebSocketGateway,
+  ) {}
+
+  @Get()
+  @Render('login')
+  loginPage() {
+    return {};
+  }
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -15,7 +34,23 @@ export class AuthController {
     @CurrentUser() user: User,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const jwt = await this.authService.login(user, response);
-    response.send(jwt);
+    await this.authService.login(user, response);
+
+    response.redirect('/chat');
+  
+    const email = user.email;
+
+    this.wsGateway.notifyUserLoggedIn(email);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('logout')
+  async logout(@Req() request: any, @Res() response: Response) {
+    await this.authService.logout(response);
+    
+    response.redirect('/');
+
+    const email = request.user.email;
+    this.wsGateway.notifyUserLoggedOut(email);
   }
 }

@@ -7,12 +7,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import { LoggerModule } from 'nestjs-pino';
-import { UsersModule } from 'src/users/users.module';
+import { UsersModule } from '../users/users.module';
+import { WebsocketModule } from '../websocket/websocket.module';
 
 @Module({
   imports: [
     UsersModule,
     LoggerModule,
+    WebsocketModule,
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
