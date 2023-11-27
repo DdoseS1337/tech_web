@@ -37,20 +37,12 @@ export class AuthController {
     await this.authService.login(user, response);
 
     response.redirect('/chat');
-  
-    const email = user.email;
-
-    this.wsGateway.notifyUserLoggedIn(email);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
-  async logout(@Req() request: any, @Res() response: Response) {
+  async logout(@Res() response: Response) {
     await this.authService.logout(response);
-    
     response.redirect('/');
-
-    const email = request.user.email;
-    this.wsGateway.notifyUserLoggedOut(email);
   }
 }

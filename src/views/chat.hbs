@@ -13,14 +13,12 @@
             console.log('WebSocket connected');
         });
 
-        socket.on('userLoggedIn', function (data) {
-            const chatArea = document.getElementById('chatArea');
-            chatArea.innerHTML += `<p>${data.message}</p>`;
-        });
-
-         socket.on('userLoggedOut', function (data) {
-            const chatArea = document.getElementById('chatArea');
-            chatArea.innerHTML += `<p>${data.message}</p>`;
+        socket.on('userStatusChanged', function (data) {
+            const { email, status } = data;
+            const onlineUsersList = document.getElementById('onlineUsers');
+            const listItem = document.createElement('li');
+            listItem.textContent = `User ${email} is ${status}`;
+            onlineUsersList.appendChild(listItem);
         });
 
         socket.on('close', function (event) {
@@ -31,7 +29,8 @@
 </head>
 <body>
     <h1>Chat</h1>
-    <div id="chatArea">
+    <ul id="onlineUsers">
+    </ul>
     </div>
         <form id="logoutForm" action="/auth/logout" method="post">
         <button type="submit">Logout</button>
