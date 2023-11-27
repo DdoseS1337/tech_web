@@ -7,6 +7,7 @@ import { WebsocketModule } from './websocket/websocket.module';
 import { LoggerModule } from './logger/logger.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
+import { AppController } from './app.contoller';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import * as Joi from 'joi';
       }),
     }),
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}

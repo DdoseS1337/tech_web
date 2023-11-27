@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat</title>
+    <style>
+    </style>
+        </style>
+        <script src="https://cdn.socket.io/4.3.2/socket.io.min.js" integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs" crossorigin="anonymous"></script>
+        <script>
+        const socket = io('http://localhost:3000');
+
+        socket.on('connect', function (event) {
+            console.log('WebSocket connected');
+        });
+
+        socket.on('userStatusChanged', function (data) {
+            const { email, status } = data;
+            const onlineUsersList = document.getElementById('onlineUsers');
+            const listItem = document.createElement('li');
+            listItem.textContent = `User ${email} is ${status}`;
+            onlineUsersList.appendChild(listItem);
+        });
+
+        socket.on('close', function (event) {
+            console.log('WebSocket disconnected');
+        });
+
+    </script>
+</head>
+<body>
+    <h1>Chat</h1>
+    <ul id="onlineUsers">
+    </ul>
+    </div>
+        <form id="logoutForm" action="/auth/logout" method="post">
+        <button type="submit">Logout</button>
+    </form>
+</body>
+</html>
