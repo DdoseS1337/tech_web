@@ -28,9 +28,12 @@ export class UsersController {
   }
 
   @Post()
-  async create(@Body() createUserDto: CreateUserDto, @Res() response: Response) {
+  async create(
+    @Body() createUserDto: CreateUserDto,
+    @Res() response: Response,
+  ) {
     await this.usersService.create(createUserDto);
-    response.redirect('/auth')
+    response.redirect('/auth');
   }
 
   @UseGuards(JwtAuthGuard)
@@ -42,8 +45,10 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Delete()
-  async delete(@Req() request: any) {
-    const userId = request.user.useidrId;
+  async delete(@Req() request: any, @Res({ passthrough: true }) response: Response) {
+    const userId = request.user.id;
+
+    response.clearCookie('Authentication');
     return this.usersService.deleteUser(+userId);
   }
 }
