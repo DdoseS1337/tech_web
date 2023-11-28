@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import * as cloudinary from 'cloudinary';
-import * as fs from 'fs';
 
 type AvailableFormatInfo = {
   jpg: any;
@@ -40,12 +39,6 @@ export class ImageService {
 
   async getImagesFromCloudinary() {
     try {
-      const imagePromises = imageUrls.map((publicId) => {
-        const options = {};
-        const result = cloudinary.v2.api.resource(publicId, options);
-        console.log(result);
-      });
-      const imageData = await Promise.all(imagePromises);
       return imageUrls;
     } catch (error) {
       console.error('Error retrieving images from Cloudinary:', error);
