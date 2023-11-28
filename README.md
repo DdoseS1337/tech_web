@@ -58,16 +58,62 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
+#Documentation
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Home Page
 
-## Stay in touch
+- `homePage()`
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Pathways
 
-## License
+1. **Registration**
+2. **Login**
+3. **Upload Photo**
+4. **Gallery**
+5. **Chat**
 
-Nest is [MIT licensed](LICENSE).
+## Registration
+
+- `registerPage()`
+- `create(userData)`
+
+Create a new user account.
+
+## Login
+
+- `loginPage()`
+- `login(credentials)`
+
+Authenticate user data and log in.
+
+## Upload Photo
+
+- `uploadpotoPage()`
+- `uploadFile(photoData)`
+
+Upload a photo to Cloudinary.
+
+## Gallery
+
+- `galleryPage()`
+- `getAllImages()`
+
+Retrieve all images.
+
+## Chat
+
+- `chatPage()`
+- **WebSocket Connection**
+  - Show all online users.
+  - Show user activity.
+- `logout()`
+
+Logout user.
+
+- `deleteUser()`
+
+Delete all user data.
+
+- `changePassword(userId, newPassword)`
+
+Change user password.
