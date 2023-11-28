@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Render,
-  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -27,7 +26,7 @@ export class ImageController {
   @UseInterceptors(FileInterceptor('image'))
   async uploadFile(@UploadedFile() file) {
     try {
-      const user = await cloudinary.v2.uploader
+      const userUrl = await cloudinary.v2.uploader
         .upload_stream({ resource_type: 'auto' }, async (error, result) => {
           if (result) {
             await this.imageService.processImage(result.url, 300, 200, 'png');
