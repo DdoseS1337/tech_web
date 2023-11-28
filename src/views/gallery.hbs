@@ -1,0 +1,15 @@
+<html>
+  <head>
+    <title>Uploaded Photo</title>
+  </head>
+  <body>
+    <h2>Uploaded Photo</h2>
+    {{#if images}}
+      {{#each images}}
+        <img src='{{this}}' alt='Uploaded Photo' />
+      {{/each}}
+    {{else}}
+      <p>No photos uploaded yet</p>
+    {{/if}}
+  </body>
+</html>
