@@ -3,6 +3,7 @@
 <head>
     <title>Chat</title>
     <style>
+
     </style>
         </style>
         <script src="https://cdn.socket.io/4.3.2/socket.io.min.js" integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs" crossorigin="anonymous"></script>
@@ -15,7 +16,7 @@
 
         socket.on('userStatusChanged', function (data) {
             const { email, status } = data;
-            const onlineUsersList = document.getElementById('onlineUsers');
+            const onlineUsersList = document.getElementById('eventsChat');
             const listItem = document.createElement('li');
             listItem.textContent = `User ${email} is ${status}`;
             onlineUsersList.appendChild(listItem);
@@ -25,15 +26,81 @@
             console.log('WebSocket disconnected');
         });
 
+        socket.on('onlineUsersList', function (onlineUsers) {
+            const onlineUsersList = document.getElementById('onlineUsers');
+            onlineUsersList.innerHTML = '';
+
+            onlineUsers.forEach((email) => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `User ${email} is online`;
+                onlineUsersList.appendChild(listItem);
+            });
+        });
+
     </script>
 </head>
 <body>
-    <h1>Chat</h1>
+    <h1>Online Users</h1>
     <ul id="onlineUsers">
     </ul>
-    </div>
-        <form id="logoutForm" action="/auth/logout" method="post">
+    <h2>Chat</h2>
+    <ul id="eventsChat">
+    </ul>
+    <form id="logoutForm" action="/auth/logout" method="post">
         <button type="submit">Logout</button>
     </form>
+        <form id="changePasswordForm">
+        <input type="password" id="oldPassword" placeholder="Old Password" required>
+        <input type="password" id="newPassword" placeholder="New Password" required>
+        <button type="button" onclick="changePassword()">Change password</button>
+    </form>
+
+     <button onclick="deleteUser()">Delete User</button>
+    <script>
+        async function changePassword() {
+            const oldPassword = document.getElementById('oldPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+
+            const formData = new FormData();
+            formData.append('oldPassword', oldPassword);
+            formData.append('newPassword', newPassword);
+
+            const request = new XMLHttpRequest();
+            request.open('PATCH', '/users', true);
+            request.setRequestHeader('Content-Type', 'application/json');
+
+            request.onreadystatechange = function () {
+                if (request.readyState === XMLHttpRequest.DONE) {
+                    if (request.status === 200) {
+                        alert('Password successfully changed');
+                    } else {
+                        alert('Failed to change password');
+                    }
+                }
+            };
+
+            request.send(JSON.stringify({ oldPassword, newPassword }));
+        }
+        async function deleteUser() {
+            try {
+                const response = await fetch('/users', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    alert('User successfully deleted');
+                    window.location.href = '/';
+                } else {
+                    alert('Failed to delete user');
+                }
+            } catch (error) {
+                console.error('An error occurred while deleting the user:', error);
+                alert('Failed to delete user');
+            }
+        }
+    </script>
 </body>
 </html>
