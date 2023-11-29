@@ -20,7 +20,7 @@ import { AppController } from './app.contoller';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        HTTP_PORT: Joi.number().required(),
+        PORT: Joi.number().required(),
         DATABASE_PORT: Joi.number().required(),
         DATABASE_HOST: Joi.string().required(),
         DATABASE_PASSWORD: Joi.string().required(),
