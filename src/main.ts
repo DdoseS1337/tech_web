@@ -15,6 +15,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.setBaseViewsDir(join(__dirname, '..', 'src', 'views')); 
   app.setViewEngine('hbs');
-  await app.listen(configService.get('HTTP_PORT'));
+  await app.listen(configService.get('HTTP_PORT'), '0.0.0.0');
 }
 bootstrap();
